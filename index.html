@@ -1,29 +1,442 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BUMI MITRA KENCANA</title>
+    <title>Bumi Mitra Kencana | Jasa Pengurugan, Galian, Konstruksi</title>
+    <meta name="description" content="Bumi Mitra Kencana melayani jasa urug tanah merah, puing, galian basement, dan layanan konstruksi terpercaya dengan metode aman dan terukur.">
+    <meta name="keywords" content="Bumi Mitra Kencana, jasa pengurugan tanah, jasa galian basement, urug tanah merah, kontraktor galian, sewa alat berat">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-        /* Reset semua margin & padding, hilangkan scrollbar ganda */
-        body, html { 
-            margin: 0; 
-            padding: 0; 
-            width: 100%; 
-            height: 100%; 
-            overflow: hidden; 
-            background-color: #111827; /* Warna gelap senada dengan hero image */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .fade-in { animation: fadeIn 1s ease-in; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        /* Buat iframe benar-benar full screen */
-        iframe { 
-            width: 100vw; 
-            height: 100vh; 
-            border: none; 
-            display: block; 
+        .slide { transition: opacity 0.7s ease-in-out; }
+        .slide-hidden { opacity: 0; pointer-events: none; z-index: 0; }
+        .slide-visible { opacity: 1; pointer-events: auto; z-index: 10; }
+        
+        /* Loading Screen Style */
+        #loading-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #111827; z-index: 9999; display: flex;
+            justify-content: center; align-items: center; flex-direction: column;
+            transition: opacity 0.5s ease;
         }
+        .spinner {
+            border: 4px solid rgba(255,255,255,0.1); border-left-color: #ea580c;
+            border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body>
-    <iframe src="https://script.google.com/macros/s/AKfycbzUXLXoAXijcQ92FpdYgtRzkim6t12p4U9quMGuuOnfzzBZHELKDog4aCKzyEA8QZUtZA/exec"></iframe>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased overflow-x-hidden">
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="spinner mb-4"></div>
+        <p class="text-white text-lg font-semibold animate-pulse">Memuat Website...</p>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="bg-white shadow-md fixed w-full z-50 transition-all duration-300 py-2" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <img src="https://i.ibb.co.com/h19PQ5hQ/Whats-App-Image-2026-05-03-at-12-21-20.jpg" alt="Icon" class="h-8 md:h-10 w-auto object-contain">
+                    <div class="flex flex-col justify-center" id="nav-brand">
+                        <!-- Disuntik via JS -->
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#layanan" class="text-gray-600 hover:text-orange-600 font-medium transition">Layanan</a>
+                    <a href="#harga" class="text-gray-600 hover:text-orange-600 font-medium transition">Harga</a>
+                    <a href="#portofolio" class="text-gray-600 hover:text-orange-600 font-medium transition">Portofolio</a>
+                    <a id="nav-wa-btn" href="#" target="_blank" class="bg-orange-600 text-white px-6 py-2.5 rounded-md font-bold hover:bg-orange-700 transition shadow-md flex items-center gap-2">
+                        <i class="fa-brands fa-whatsapp text-lg"></i> Hubungi Kami
+                    </a>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-orange-600 focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 px-4 pt-2 pb-4 space-y-1 shadow-lg absolute w-full">
+            <a href="#layanan" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-orange-600 hover:bg-orange-50 rounded-md">Layanan</a>
+            <a href="#harga" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-orange-600 hover:bg-orange-50 rounded-md">Harga</a>
+            <a href="#portofolio" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-orange-600 hover:bg-orange-50 rounded-md">Portofolio</a>
+            <a id="mobile-wa-btn" href="#" target="_blank" class="mt-4 block text-center bg-green-500 text-white px-4 py-3 rounded-md font-bold hover:bg-green-600 transition">
+                <i class="fa-brands fa-whatsapp"></i> Chat WhatsApp
+            </a>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="relative h-[50vh] sm:h-[65vh] md:h-[80vh] lg:h-screen pt-20 overflow-hidden bg-black" id="beranda">
+        <div id="carousel-slides" class="relative w-full h-full">
+            <!-- Slides Disuntik via JS -->
+        </div>
+        <button id="prev-slide" class="absolute left-2 top-1/2 -translate-y-1/2 z-30 bg-white/10 hover:bg-orange-600 text-white w-10 h-10 flex items-center justify-center rounded-full backdrop-blur-sm transition-all border border-white/20">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button id="next-slide" class="absolute right-2 top-1/2 -translate-y-1/2 z-30 bg-white/10 hover:bg-orange-600 text-white w-10 h-10 flex items-center justify-center rounded-full backdrop-blur-sm transition-all border border-white/20">
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+        <div id="carousel-indicators" class="absolute bottom-6 left-0 right-0 z-30 flex justify-center space-x-2">
+            <!-- Titik Disuntik via JS -->
+        </div>
+    </section>
+
+    <!-- LAYANAN SECTION -->
+    <section id="layanan" class="py-24 bg-white overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-base text-orange-600 font-semibold tracking-wide uppercase">Layanan Kami</h2>
+                <h3 class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">Apa yang Kami Lakukan</h3>
+                <div class="w-24 h-1 bg-orange-500 mx-auto mt-6 rounded-full"></div>
+            </div>
+            <div id="layanan-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Data Layanan Disuntik via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- HARGA SECTION -->
+    <section id="harga" class="py-24 bg-gray-100 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-base text-orange-600 font-semibold tracking-wide uppercase">Estimasi Paket Harga</h2>
+                <div class="w-24 h-1 bg-orange-500 mx-auto mt-6 rounded-full"></div>
+            </div>
+            <div id="harga-container" class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Data Harga Disuntik via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- PORTOFOLIO SECTION -->
+    <section id="portofolio" class="py-24 bg-gray-50 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12" data-aos="fade-up">
+                <h2 class="text-base text-orange-600 font-semibold tracking-wide uppercase">Hasil Kerja Nyata</h2>
+                <h3 class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">Galeri Portofolio Proyek</h3>
+            </div>
+            <div id="portofolio-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Data Portofolio Disuntik via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- MODAL GAMBAR -->
+    <div id="modalGambar" class="fixed inset-0 bg-black/90 z-[100] hidden flex items-center justify-center p-4 transition-opacity opacity-0 duration-300">
+        <button onclick="tutupModalGambar()" class="absolute top-6 right-6 md:top-10 md:right-10 text-white hover:text-orange-500 z-50 focus:outline-none transition-colors">
+            <i class="fa-solid fa-xmark text-4xl"></i>
+        </button>
+        <div class="relative max-w-5xl w-full flex flex-col items-center">
+            <img id="imgDalamModal" src="" alt="Portofolio" class="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl transform scale-95 transition-transform duration-300">
+            <h4 id="teksDalamModal" class="text-white text-xl md:text-2xl font-bold mt-4 text-center hidden"></h4>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-gray-900 pt-16 pb-8 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                <div data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex items-center gap-2 mb-6">
+                        <img src="https://i.ibb.co.com/h19PQ5hQ/Whats-App-Image-2026-05-03-at-12-21-20.jpg" alt="Icon" class="h-8 md:h-10 w-auto object-contain">
+                        <span id="footer-brand" class="text-2xl font-bold text-white"></span>
+                    </div>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="200"></div> 
+                <div data-aos="fade-up" data-aos-delay="300">
+                    <h4 class="text-white text-lg font-bold mb-6">Informasi Kontak</h4>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start text-gray-400">
+                            <i class="fa-solid fa-location-dot mt-1 mr-3 text-orange-500"></i>
+                            <a id="footer-alamat" href="#" target="_blank" class="hover:text-orange-500 transition cursor-pointer"></a>
+                        </li>
+                        <li class="flex items-center text-gray-400">
+                            <i class="fa-brands fa-whatsapp mr-3 text-orange-500 text-lg"></i>
+                            <a id="footer-wa" href="#" target="_blank" class="hover:text-orange-500 transition cursor-pointer"></a>
+                        </li>
+                        <li class="flex items-center text-gray-400">
+                            <i class="fa-solid fa-building mr-3 text-orange-500 text-lg"></i>
+                            <a href="https://wa.me/628138355121" target="_blank" class="hover:text-orange-500 transition cursor-pointer">+628138355121 (Office)</a>
+                        </li>
+                        <li class="flex items-center text-gray-400">
+                            <i class="fa-solid fa-envelope mr-3 text-orange-500"></i>
+                            <a id="footer-email" href="#" class="hover:text-orange-500 transition cursor-pointer"></a>
+                        </li>
+                    </ul>
+                    <h4 class="text-white text-lg font-bold mb-4">Temukan Kami</h4>
+                    <div class="flex space-x-4">
+                        <a href="https://youtube.com/@cvbumimitrakencana?si=_ZuqDHNJtAYMw6vm" target="_blank" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-red-600 hover:text-white transition-colors duration-300"><i class="fa-brands fa-youtube text-xl"></i></a>
+                        <a href="https://www.facebook.com/share/1fVanZugga/" target="_blank" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 hover:bg-blue-600 hover:text-white transition-colors duration-300"><i class="fa-brands fa-facebook-f text-xl"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div id="footer-copyright" class="border-t border-gray-800 pt-8 mt-8 text-center text-gray-500 text-sm"></div>
+        </div>
+        
+        <!-- FLOATING WA -->
+        <a id="floating-wa" href="#" target="_blank" class="fixed bottom-24 right-6 md:bottom-8 md:right-8 z-[90] flex items-center justify-center w-14 h-14 md:w-16 md:h-16 bg-green-500 text-white rounded-full shadow-[0_4px_15px_rgba(34,197,94,0.4)] hover:bg-green-600 hover:scale-110 hover:-translate-y-1 transition-all duration-300 group">
+            <i class="fa-brands fa-whatsapp text-3xl md:text-4xl"></i>
+            <span class="absolute top-0 right-0 flex h-3 w-3 md:h-4 md:w-4">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-3 w-3 md:h-4 md:w-4 bg-red-500 border-2 border-white"></span>
+            </span>
+            <span class="absolute right-full mr-4 bg-white text-gray-800 text-sm font-bold px-4 py-2 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none hidden md:block">
+                Chat via WhatsApp
+                <span class="absolute top-1/2 -right-1.5 -translate-y-1/2 border-t-8 border-b-8 border-l-8 border-transparent border-l-white"></span>
+            </span>
+        </a>
+    </footer>
+
+    <!-- SCRIPT UTAMA UNTUK FETCH DATA -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // ====================================================================
+        // GANTI LINK DI BAWAH INI DENGAN WEB APP URL GAS ANDA YANG BARU
+        // ====================================================================
+        const GAS_API_URL = "https://script.google.com/macros/s/AKfycbxjPqX-wO_u5jsjcqbubYKuybujkWUUfbKPd7pz0ok7u1dnpEvlzi08rRxmAMZpT4Fr/exec?api=true";
+        
+        // Logika Navbar Mobile
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 10) { navbar.classList.add('shadow-md'); navbar.classList.remove('py-2'); }
+            else { navbar.classList.remove('shadow-md'); navbar.classList.add('py-2'); }
+        });
+
+        // Ambil Data dari API Google Apps Script
+        fetch(GAS_API_URL)
+            .then(response => response.json())
+            .then(data => {
+                renderSettings(data.settings);
+                renderHero(data.hero);
+                renderLayanan(data.layanan);
+                renderHarga(data.harga);
+                renderPortofolio(data.portofolio);
+                
+                // Hapus Loading Screen & Inisialisasi Animasi AOS
+                document.getElementById('loading-screen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loading-screen').style.display = 'none';
+                    AOS.init({ duration: 800, once: true, offset: 100 });
+                }, 500);
+            })
+            .catch(error => {
+                console.error('Gagal memuat data:', error);
+                document.getElementById('loading-screen').innerHTML = "<p class='text-red-500 text-xl font-bold'>Gagal memuat data. Silakan muat ulang halaman.</p>";
+            });
+
+        function renderSettings(settings) {
+            document.title = (settings.nama_web || "Perusahaan") + " | Jasa Pengurugan, Galian, Konstruksi";
+            
+            // Brand Name di Navbar
+            let namaArr = (settings.nama_web || 'Company').trim().split(' ');
+            let htmlBrand = `<span class="text-xl md:text-2xl font-bold text-gray-900 leading-none">${namaArr[0]}</span>`;
+            if (namaArr.length > 1) {
+                htmlBrand += `<span class="text-xs md:text-sm font-bold text-orange-600 tracking-wide uppercase mt-0.5">${namaArr.slice(1).join(' ')}</span>`;
+            }
+            document.getElementById('nav-brand').innerHTML = htmlBrand;
+            document.getElementById('footer-brand').innerText = settings.nama_web;
+            
+            // Tautan WhatsApp
+            let waLink = `https://wa.me/${settings.no_wa}?text=Halo ${settings.nama_web}, saya ingin berkonsultasi mengenai layanan Anda.`;
+            document.getElementById('nav-wa-btn').href = waLink;
+            document.getElementById('mobile-wa-btn').href = waLink;
+            document.getElementById('floating-wa').href = waLink;
+            
+            // Footer
+            document.getElementById('footer-alamat').innerText = settings.alamat;
+            document.getElementById('footer-wa').innerText = `+${settings.no_wa}`;
+            document.getElementById('footer-wa').href = waLink;
+            document.getElementById('footer-email').innerText = settings.email;
+            document.getElementById('footer-email').href = `mailto:${settings.email}`;
+            document.getElementById('footer-copyright').innerHTML = `&copy; ${new Date().getFullYear()} ${settings.nama_web}. All rights reserved.`;
+        }
+
+        function renderHero(heroData) {
+            const container = document.getElementById('carousel-slides');
+            const indicators = document.getElementById('carousel-indicators');
+            let html = ''; let dotsHtml = '';
+            
+            heroData.forEach((h, i) => {
+                let visClass = i === 0 ? 'slide-visible fade-in' : 'slide-hidden';
+                let dotClass = i === 0 ? 'bg-orange-600' : 'bg-white/40';
+                
+                let tagHtml = h[1] ? `<span class="inline-block py-1 px-3 rounded-full bg-orange-600 text-white font-bold text-[10px] md:text-xs uppercase tracking-widest mb-4 shadow-lg">${h[1]}</span>` : '';
+                let btn1Html = h[4] ? `<a href="${h[5]}" target="_blank" class="w-full sm:w-auto bg-green-600 text-white text-xs md:text-sm font-bold px-6 py-3 rounded shadow-xl hover:bg-green-700 transition flex items-center justify-center gap-2"><i class="fa-brands fa-whatsapp text-lg"></i> ${h[4]}</a>` : '';
+                let btn2Html = h[6] ? `<a href="${h[7]}" class="w-full sm:w-auto bg-white/10 backdrop-blur-md border border-white/30 text-white text-xs md:text-sm font-bold px-6 py-3 rounded hover:bg-white hover:text-black transition">${h[6]}</a>` : '';
+
+                html += `
+                <div class="slide ${visClass} absolute inset-0 w-full h-full flex items-center justify-center">
+                    <div class="absolute inset-0 w-full h-full">
+                        <img src="${h[0]}" alt="Banner ${i}" class="w-full h-full object-cover object-center transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gray-900/20"></div>
+                    </div>
+                    <div class="relative z-20 text-center px-6 max-w-5xl mx-auto">
+                        ${tagHtml}
+                        <h1 class="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 leading-tight drop-shadow-2xl">${h[2]}</h1>
+                        <p class="text-xs sm:text-base md:text-lg text-white mb-8 max-w-2xl mx-auto font-medium drop-shadow-lg leading-relaxed">${h[3]}</p>
+                        <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
+                            ${btn1Html} ${btn2Html}
+                        </div>
+                    </div>
+                </div>`;
+                
+                dotsHtml += `<button class="carousel-dot w-2 h-2 rounded-full ${dotClass} transition-all" data-index="${i}"></button>`;
+            });
+            
+            container.innerHTML = html;
+            indicators.innerHTML = dotsHtml;
+            initCarousel();
+        }
+
+        function initCarousel() {
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.carousel-dot');
+            const prevBtn = document.getElementById('prev-slide');
+            const nextBtn = document.getElementById('next-slide');
+            let currentSlide = 0; let slideInterval;
+
+            if (slides.length === 0) return;
+
+            function showSlide(index) {
+                slides.forEach(s => { s.classList.remove('slide-visible'); s.classList.add('slide-hidden'); });
+                dots.forEach(d => { d.classList.remove('bg-orange-600'); d.classList.add('bg-white/40'); });
+                if(slides[index]) {
+                    slides[index].classList.remove('slide-hidden'); slides[index].classList.add('slide-visible');
+                    dots[index].classList.remove('bg-white/40'); dots[index].classList.add('bg-orange-600');
+                }
+            }
+            function nextSlide() { currentSlide = (currentSlide + 1) % slides.length; showSlide(currentSlide); }
+            function prevSlideFunc() { currentSlide = (currentSlide - 1 + slides.length) % slides.length; showSlide(currentSlide); }
+            function startSlideShow() { slideInterval = setInterval(nextSlide, 5000); }
+            function resetInterval() { clearInterval(slideInterval); startSlideShow(); }
+
+            nextBtn.addEventListener('click', () => { nextSlide(); resetInterval(); });
+            prevBtn.addEventListener('click', () => { prevSlideFunc(); resetInterval(); });
+            dots.forEach((dot, index) => { dot.addEventListener('click', () => { currentSlide = index; showSlide(currentSlide); resetInterval(); }); });
+            startSlideShow();
+        }
+
+        function renderLayanan(layananData) {
+            let html = '';
+            layananData.forEach((l, i) => {
+                let delay = (i % 3 + 1) * 100;
+                html += `
+                <div data-aos="fade-up" data-aos-delay="${delay}" class="bg-gray-50 rounded-xl p-8 border border-gray-100 hover:border-orange-200 hover:shadow-lg transition-all duration-300 group">
+                    <div class="w-14 h-14 bg-orange-100 text-orange-600 rounded-lg flex items-center justify-center text-2xl mb-6 group-hover:bg-orange-600 group-hover:text-white transition-colors">
+                        <i class="${l[0]}"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-3">${l[1]}</h4>
+                    <p class="text-gray-600 leading-relaxed">${l[2]}</p>
+                </div>`;
+            });
+            document.getElementById('layanan-container').innerHTML = html;
+        }
+
+        function renderHarga(hargaData) {
+            let html = '';
+            let waGlobal = document.getElementById('footer-wa').innerText.replace('+',''); // Ambil nomor WA dari elemen sebelumnya
+            
+            hargaData.forEach(h => {
+                let isPopular = h[8] && h[8].toString().toLowerCase() === 'ya';
+                let boxClass = isPopular ? 'border-2 border-orange-500 shadow-xl transform md:-translate-y-4 z-10 pt-10' : 'border border-gray-200';
+                let btnClass = isPopular ? 'bg-orange-600 hover:bg-orange-700 text-white shadow-md' : 'bg-gray-50 hover:bg-gray-100 text-orange-600 border border-orange-200';
+                
+                let plusList = h[5] ? h[5].toString().split('\n').filter(p => p.trim() !== '') : [];
+                let minusList = h[6] ? h[6].toString().split('\n').filter(p => p.trim() !== '') : [];
+                
+                let listHtml = '';
+                plusList.forEach(p => {
+                    listHtml += `<li class="flex items-start"><i class="fa-solid fa-check text-green-500 mt-1 mr-3"></i><span class="text-gray-600">${p}</span></li>`;
+                });
+                minusList.forEach(m => {
+                    listHtml += `<li class="flex items-start text-gray-400"><i class="fa-solid fa-xmark mt-1 mr-3"></i><span>${m}</span></li>`;
+                });
+
+                let tagHtml = isPopular ? `<div class="absolute top-0 inset-x-0 bg-orange-500 text-white text-center text-sm font-bold py-1 uppercase tracking-wider">Terpopuler</div>` : '';
+
+                html += `
+                <div data-aos="fade-up" data-aos-delay="100" class="bg-white rounded-2xl shadow-sm ${boxClass} overflow-hidden relative flex flex-col hover:shadow-xl transition-shadow duration-300">
+                    ${tagHtml}
+                    <div class="p-8 flex-grow">
+                        <h4 class="text-xl font-bold text-gray-900 mb-2">${h[0]}</h4>
+                        <p class="text-gray-500 text-sm mb-6">${h[1]}</p>
+                        <div class="mb-6">
+                            <span class="text-gray-500 text-sm">${h[2]}</span>
+                            <div class="flex items-baseline">
+                                <span class="text-3xl font-extrabold text-gray-900">${h[3]}</span>
+                                <span class="text-gray-500 ml-1">${h[4]}</span>
+                            </div>
+                        </div>
+                        <ul class="space-y-4 mb-8">${listHtml}</ul>
+                    </div>
+                    <div class="p-8 pt-0 mt-auto">
+                        <a href="https://wa.me/${waGlobal}?text=Halo saya tertarik dengan paket ${encodeURIComponent(h[0])}" target="_blank" class="block w-full text-center font-bold py-3 rounded-lg transition ${btnClass}">${h[7]}</a>
+                    </div>
+                </div>`;
+            });
+            document.getElementById('harga-container').innerHTML = html;
+        }
+
+        function renderPortofolio(portofolioData) {
+            let html = '';
+            portofolioData.forEach(p => {
+                let videoId = p[3] ? p[3].toString().trim() : '';
+                let isPlaylist = videoId.startsWith('PL');
+                
+                if (isPlaylist) {
+                    html += `<div data-aos="zoom-in" data-aos-delay="100" class="group relative overflow-hidden rounded-xl shadow-md h-64 bg-black"><iframe class="w-full h-full object-cover" src="https://www.youtube.com/embed/videoseries?list=${videoId}" title="${p[1]}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
+                } else if (videoId) {
+                    html += `<div data-aos="zoom-in" data-aos-delay="100" class="group relative overflow-hidden rounded-xl shadow-md h-64 bg-black"><iframe class="w-full h-full object-cover" src="https://www.youtube.com/embed/${videoId}?rel=0" title="${p[1]}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
+                } else {
+                    html += `
+                    <div data-aos="zoom-in" data-aos-delay="100" class="group relative overflow-hidden rounded-xl shadow-md h-64 bg-black cursor-pointer" onclick="bukaModalGambar('${p[0]}', '${p[1]}')">
+                        <img src="${p[0]}" alt="${p[1]}" class="object-cover w-full h-full transform group-hover:scale-110 transition duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent opacity-80 pointer-events-none"></div>
+                        <div class="absolute bottom-0 left-0 p-6 w-full pointer-events-none">
+                            <h4 class="text-white font-bold text-lg mb-1">${p[1]}</h4>
+                            <p class="text-gray-300 text-sm">${p[2]}</p>
+                        </div>
+                    </div>`;
+                }
+            });
+            document.getElementById('portofolio-container').innerHTML = html;
+        }
+
+        // LOGIKA POP-UP GAMBAR
+        const modal = document.getElementById('modalGambar');
+        const imgModal = document.getElementById('imgDalamModal');
+        const teksModal = document.getElementById('teksDalamModal');
+        function bukaModalGambar(src, judul) {
+            imgModal.src = src;
+            if(judul) { teksModal.innerText = judul; teksModal.classList.remove('hidden'); } 
+            else { teksModal.classList.add('hidden'); }
+            modal.classList.remove('hidden');
+            setTimeout(() => { modal.classList.remove('opacity-0'); imgModal.classList.remove('scale-95'); imgModal.classList.add('scale-100'); }, 10);
+        }
+        function tutupModalGambar() {
+            modal.classList.add('opacity-0'); imgModal.classList.remove('scale-100'); imgModal.classList.add('scale-95');
+            setTimeout(() => { modal.classList.add('hidden'); imgModal.src = ''; }, 300);
+        }
+        modal.addEventListener('click', e => { if (e.target === modal) tutupModalGambar(); });
+    </script>
 </body>
 </html>
