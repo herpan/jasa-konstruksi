@@ -108,7 +108,18 @@
                 <div class="w-24 h-1 bg-orange-500 mx-auto mt-6 rounded-full"></div>
             </div>
             <div id="layanan-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Data Layanan Disuntik via JS -->
+                <div class="bg-gray-50 rounded-xl p-8 border border-gray-100">
+                    <h4 class="text-xl font-bold text-gray-900 mb-3">Jasa Pengurugan & Galian</h4>
+                    <p class="text-gray-600">CV Bumi Mitra Kencana melayani jasa urug tanah, land clearing, cut and fill, galian basement, dan buang sampah proyek dengan metode yang aman dan terukur.</p>
+                </div>
+                <div class="bg-gray-50 rounded-xl p-8 border border-gray-100">
+                    <h4 class="text-xl font-bold text-gray-900 mb-3">Aspal Hotmix & Paving Block</h4>
+                    <p class="text-gray-600">Layanan profesional pengaspalan hotmix dan pemasangan paving block untuk jalan, halaman, hingga area parkir.</p>
+                </div>
+                <div class="bg-gray-50 rounded-xl p-8 border border-gray-100">
+                    <h4 class="text-xl font-bold text-gray-900 mb-3">Sewa Alat Berat & Konstruksi</h4>
+                    <p class="text-gray-600">Menyewakan alat berat terlengkap untuk bongkaran gedung. Kami juga melayani jasa pembuatan taman dan las konstruksi logam (pagar, kanopi, teralis, rangka atap).</p>
+                </div>
             </div>
         </div>
     </section>
@@ -240,9 +251,16 @@
                     AOS.init({ duration: 800, once: true, offset: 100 });
                 }, 500);
             })
-            .catch(error => {
-                console.error('Gagal memuat data:', error);
-                document.getElementById('loading-screen').innerHTML = "<p class='text-red-500 text-xl font-bold'>Gagal memuat data. Silakan muat ulang halaman.</p>";
+           .catch(error => {
+                // JIKA GAGAL (Atau jika dirender oleh Googlebot)
+                console.error('Data API diblokir/gagal dimuat:', error);
+                
+                // Hilangkan layar loading agar konten SEO statis tetap bisa diindeks dan dibaca
+                document.getElementById('loading-screen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loading-screen').style.display = 'none';
+                    AOS.init({ duration: 800, once: true, offset: 100 });
+                }, 500);
             });
 
         function renderSettings(settings) {
